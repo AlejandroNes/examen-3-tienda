@@ -11,6 +11,8 @@ export class TiendaService {
   }
 
   async refrescarDatos() {
+    if (!db) return;
+
     const categoriasGuardadas = await db.categorias.toArray();
     const productosGuardados = await db.productos.toArray();
 

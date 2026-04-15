@@ -26,4 +26,11 @@ export class MiBaseDeDatos extends Dexie {
   }
 }
 
-export const db = new MiBaseDeDatos();
+// Dejamos la variable lista pero vacía
+export let db: MiBaseDeDatos;
+
+// Este es el escudo: ¿Estamos en un navegador de verdad?
+if (typeof window !== 'undefined') {
+  // ¡Sí! Entonces creamos la base de datos
+  db = new MiBaseDeDatos();
+}
