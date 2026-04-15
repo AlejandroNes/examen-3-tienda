@@ -1,9 +1,10 @@
 import { Injectable, signal } from '@angular/core';
-import { db, Categoria, Producto } from './base-datos';
+import { db, Categoria, Producto, Proveedor } from './base-datos';
 
 @Injectable({ providedIn: 'root' })
 export class TiendaService {
   listaCategorias = signal<Categoria[]>([]);
+  listaProveedores = signal<Proveedor[]>([]);
   listaProductos = signal<Producto[]>([]);
 
   constructor() {
@@ -12,29 +13,48 @@ export class TiendaService {
 
   async refrescarDatos() {
     if (!db) return;
-
-    const categoriasGuardadas = await db.categorias.toArray();
-    const productosGuardados = await db.productos.toArray();
-
-    this.listaCategorias.set(categoriasGuardadas);
-    this.listaProductos.set(productosGuardados);
+    this.listaCategorias.set(await db.categorias.toArray());
+    this.listaProveedores.set(await db.proveedores.toArray());
+    this.listaProductos.set(await db.productos.toArray());
   }
 
-  async agregarCategoria(nombre: string) {
-    await db.categorias.add({ nombre: nombre });
+  // CRUD CATEGORÍAS
+  async agregarCategoria(datos: Categoria) {
+    await db.categorias.add(datos);
     this.refrescarDatos();
   }
-
+  async actualizarCategoria(id: number, datos: Categoria) {
+    await db.categorias.update(id, datos);
+    this.refrescarDatos();
+  }
   async borrarCategoria(id: number) {
     await db.categorias.delete(id);
     this.refrescarDatos();
   }
 
-  async agregarProducto(producto: Producto) {
-    await db.productos.add(producto);
+  //CRUD PROVEEDORES
+  async agregarProveedor(datos: Proveedor) {
+    await db.proveedores.add(datos);
+    this.refrescarDatos();
+  }
+  async actualizarProveedor(id: number, datos: Proveedor) {
+    await db.proveedores.update(id, datos);
+    this.refrescarDatos();
+  }
+  async borrarProveedor(id: number) {
+    await db.proveedores.delete(id);
     this.refrescarDatos();
   }
 
+  // CRUD PRODUCTOS
+  async agregarProducto(datos: Producto) {
+    await db.productos.add(datos);
+    this.refrescarDatos();
+  }
+  async actualizarProducto(id: number, datos: Producto) {
+    await db.productos.update(id, datos);
+    this.refrescarDatos();
+  }
   async borrarProducto(id: number) {
     await db.productos.delete(id);
     this.refrescarDatos();

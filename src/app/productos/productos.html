@@ -1,0 +1,83 @@
+<div class="container mt-4">
+  <h2 class="mb-3">Gestión de Productos (Entidad Principal)</h2>
+
+  <div class="card p-4 mb-4 shadow-sm">
+    <div class="row g-3">
+      <div class="col-md-3">
+        <label>Nombre del Producto</label>
+        <input type="text" class="form-control" [(ngModel)]="nombreNuevo" />
+      </div>
+      <div class="col-md-2">
+        <label>Precio</label>
+        <input type="number" class="form-control" [(ngModel)]="precioNuevo" />
+      </div>
+
+      <div class="col-md-3">
+        <label>Categoría</label>
+        <select class="form-control" [(ngModel)]="categoriaIdSeleccionada">
+          <option value="0">Seleccione...</option>
+          @for (cat of categorias(); track cat.id) {
+            <option [value]="cat.id">{{ cat.nombre }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="col-md-3">
+        <label>Proveedor</label>
+        <select class="form-control" [(ngModel)]="proveedorIdSeleccionado">
+          <option value="0">Seleccione...</option>
+          @for (prov of proveedores(); track prov.id) {
+            <option [value]="prov.id">{{ prov.nombre }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="col-md-1 d-flex align-items-end">
+        <button
+          class="btn"
+          [ngClass]="idEditando ? 'btn-warning' : 'btn-success'"
+          (click)="guardar()"
+        >
+          {{ idEditando ? 'Actualizar' : 'Crear' }}
+        </button>
+      </div>
+    </div>
+    @if (idEditando) {
+      <button class="btn btn-link mt-2" (click)="limpiarFormulario()">Cancelar edición</button>
+    }
+  </div>
+
+  <table class="table table-striped table-hover">
+    <thead class="table-dark">
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Precio</th>
+        <th>Cat. ID</th>
+        <th>Prov. ID</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (prod of productos(); track prod.id) {
+        <tr>
+          <td>{{ prod.id }}</td>
+          <td>{{ prod.nombre }}</td>
+          <td>${{ prod.precio }}</td>
+          <td>{{ prod.categoriaId }}</td>
+          <td>{{ prod.proveedorId }}</td>
+          <td>
+            <button class="btn btn-warning btn-sm me-2" (click)="prepararEdicion(prod)">
+              Editar
+            </button>
+            <button class="btn btn-danger btn-sm" (click)="eliminar(prod.id)">Eliminar</button>
+          </td>
+        </tr>
+      } @empty {
+        <tr>
+          <td colspan="6" class="text-center">No hay productos registrados.</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

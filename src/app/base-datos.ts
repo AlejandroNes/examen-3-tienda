@@ -5,32 +5,36 @@ export interface Categoria {
   nombre: string;
 }
 
+export interface Proveedor {
+  id?: number;
+  nombre: string;
+  telefono: string;
+}
+
 export interface Producto {
   id?: number;
   nombre: string;
   precio: number;
   categoriaId: number;
+  proveedorId: number;
 }
 
 export class MiBaseDeDatos extends Dexie {
   categorias!: Table<Categoria, number>;
+  proveedores!: Table<Proveedor, number>;
   productos!: Table<Producto, number>;
 
   constructor() {
     super('TiendaDB');
-
-    this.version(1).stores({
+    this.version(2).stores({
       categorias: '++id, nombre',
-      productos: '++id, nombre, precio, categoriaId',
+      proveedores: '++id, nombre',
+      productos: '++id, nombre, precio, categoriaId, proveedorId',
     });
   }
 }
 
-// Dejamos la variable lista pero vacía
 export let db: MiBaseDeDatos;
-
-// Este es el escudo: ¿Estamos en un navegador de verdad?
 if (typeof window !== 'undefined') {
-  // ¡Sí! Entonces creamos la base de datos
   db = new MiBaseDeDatos();
 }
