@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { TiendaService } from '../tienda';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms'; // Vital para leer los cuadros de texto
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-categorias',
