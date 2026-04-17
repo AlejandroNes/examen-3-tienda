@@ -34,6 +34,7 @@ export class ProveedoresComponent {
   }
 
   prepararEdicion(prov: any) {
+    
     this.idEditando = prov.id;
     this.nombreNuevo = prov.nombre;
     this.telefonoNuevo = prov.telefono;
