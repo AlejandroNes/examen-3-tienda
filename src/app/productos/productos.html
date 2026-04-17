@@ -1,5 +1,5 @@
 <div class="container mt-4">
-  <h2 class="mb-3">Gestión de Productos</h2>
+  <h2 class="mb-3">Productos De la Tienda</h2>
 
   <div class="card p-4 mb-4 shadow-sm">
     <div class="row g-3">
@@ -8,7 +8,7 @@
         <input type="text" class="form-control" [(ngModel)]="nombreNuevo" />
       </div>
       <div class="col-md-2">
-        <label>Precio</label>
+        <label>Precio (Bs.)</label>
         <input type="number" class="form-control" [(ngModel)]="precioNuevo" />
       </div>
 
@@ -63,7 +63,7 @@
         <tr>
           <td>{{ prod.id }}</td>
           <td>{{ prod.nombre }}</td>
-          <td>${{ prod.precio }}</td>
+          <td>Bs. {{ prod.precio }}</td>
           <td>{{ prod.categoriaId }}</td>
           <td>{{ prod.proveedorId }}</td>
           <td>
