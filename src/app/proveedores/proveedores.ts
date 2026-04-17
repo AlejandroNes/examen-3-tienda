@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { TiendaService } from '../tienda';
+import { TiendaService } from '../tienda'; // Asegúrate de que esta ruta llegue a tu servicio
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -7,45 +7,54 @@ import { FormsModule } from '@angular/forms';
   selector: 'app-proveedores',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  // OJO AQUÍ: Si tu archivo HTML de esta carpeta se llama proveedores.component.html, agrégale el .component
   templateUrl: './proveedores.html',
 })
 export class ProveedoresComponent {
+  // 1. Llamamos a nuestro servicio (el gerente)
   servicio = inject(TiendaService);
 
-  // Traemos el Signal de proveedores
+  // 2. Traemos la lista de proveedores
   misProveedores = this.servicio.listaProveedores;
 
-  // Variables del formulario
+  // 3. Variables para nuestro formulario
   nombreNuevo = '';
   telefonoNuevo = '';
-  idEditando: number | null = null; // Para saber si estamos creando o editando
+  idEditando: number | null = null; // Nos avisa si estamos creando o editando
 
+  // 4. Función para guardar o actualizar
   guardar() {
-    // Verificamos que no envíen campos vacíos
+    // Verificamos que no nos manden campos vacíos
     if (this.nombreNuevo.trim() !== '' && this.telefonoNuevo.trim() !== '') {
-      const datos = { nombre: this.nombreNuevo, telefono: this.telefonoNuevo };
+      const datos = {
+        nombre: this.nombreNuevo,
+        telefono: this.telefonoNuevo,
+      };
 
       if (this.idEditando) {
-        this.servicio.actualizarProveedor(this.idEditando, datos); // EDITAR
+        this.servicio.actualizarProveedor(this.idEditando, datos); // Si hay ID, edita
       } else {
-        this.servicio.agregarProveedor(datos); // CREAR
+        this.servicio.agregarProveedor(datos); // Si no hay ID, crea uno nuevo
       }
-      this.limpiar();
+
+      this.limpiar(); // Dejamos el formulario en blanco al terminar
     }
   }
 
-  // Cuando le dan clic al botón "Editar" de la tabla
+  // 5. Prepara el formulario cuando tocamos el botón "Editar" en la tabla
   prepararEdicion(prov: any) {
     this.idEditando = prov.id;
     this.nombreNuevo = prov.nombre;
     this.telefonoNuevo = prov.telefono;
   }
 
+  // 6. Función para borrar
   eliminar(id: number | undefined) {
-    if (id) this.servicio.borrarProveedor(id);
+    if (id) {
+      this.servicio.borrarProveedor(id);
+    }
   }
 
+  // 7. Función para vaciar las cajas de texto
   limpiar() {
     this.idEditando = null;
     this.nombreNuevo = '';
